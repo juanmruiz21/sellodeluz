@@ -6,113 +6,83 @@
     <title>Sello de Luz | Juano Ruiz Fotografía</title>
     
     <link rel="shortcut icon" type="image/png" href="logo.png">
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
         :root { 
             --bg: #000000; 
             --card-bg: #111111; 
             --accent: #3b82f6; 
-            --success: #10b981;
+            --success: #10b981; 
             --text: #ffffff; 
             --muted: #a1a1aa; 
         }
         
         body { 
-            font-family: -apple-system, system-ui, sans-serif; 
+            font-family: 'Inter', sans-serif; 
             background: var(--bg); color: var(--text); margin: 0;
             display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        /* --- HEADER --- */
-        header { 
-            padding: 50px 0 30px; width: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+        header { padding: 80px 0 40px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 25px; }
+        
+        /* LOGO PRINCIPAL MÁS GRANDE */
+        .logo-main { 
+            width: 280px; /* Aumentado */
+            height: auto; 
+            filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3)); 
+            transition: 0.5s ease; 
         }
-        .logo-main { width: 110px; height: auto; display: block; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
-        .brand-text-container { text-align: center; }
-        .brand-name { font-size: 3.2rem; font-weight: 900; letter-spacing: -2px; line-height: 1; margin: 0; text-transform: uppercase; }
-        .brand-subtitle { font-size: 0.95rem; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-top: 8px; }
+        .logo-main:hover { transform: scale(1.05); }
+        
+        .brand-name { font-size: clamp(2.8rem, 10vw, 4.5rem); font-weight: 900; letter-spacing: -3px; line-height: 1; margin: 0; text-transform: uppercase; text-align: center; }
+        .brand-subtitle { font-size: 1.1rem; letter-spacing: 8px; text-transform: uppercase; color: var(--muted); margin-top: 10px; text-align: center; }
 
-        /* --- CONTENEDOR PRINCIPAL AMPLIO --- */
-        .container { 
-            width: 95%; max-width: 900px; /* Ancho para PC */
-            padding-bottom: 50px; 
-        }
-
+        .container { width: 95%; max-width: 900px; padding-bottom: 60px; }
         .card { 
-            background: var(--card-bg); 
-            padding: 30px; 
-            border-radius: 20px; 
-            border: 1px solid rgba(255,255,255,0.05); 
-            text-align: center;
+            background: var(--card-bg); padding: 40px; border-radius: 30px; 
+            border: 1px solid rgba(255,255,255,0.08); text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
         }
 
         .btn-main {
-            background: transparent; color: var(--text); 
-            padding: 18px; border-radius: 12px;
-            font-weight: 700; cursor: pointer; 
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 100%; max-width: 380px; 
-            border: 1px solid rgba(255,255,255,0.2);
-            margin: 10px auto; text-decoration: none; font-size: 1rem;
-            transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            background: transparent; color: var(--text); padding: 22px; border-radius: 18px;
+            font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+            width: 100%; max-width: 420px; border: 1px solid rgba(255,255,255,0.2);
+            margin: 12px auto; text-decoration: none; font-size: 1.15rem; transition: 0.3s;
         }
-        .btn-main:hover { background: rgba(255,255,255,0.08); border-color: var(--text); }
-        .btn-main i { margin-right: 10px; font-size: 1.1rem; }
+        .btn-generate { background: var(--accent); border: none; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); }
+        .btn-generate:hover:not(:disabled) { background: #2563eb; transform: translateY(-2px); }
+        .btn-generate:disabled { background: #222; opacity: 0.5; cursor: not-allowed; }
 
-        .btn-generate { background: var(--accent); border: none; color: white; }
-        .btn-generate:hover { background: #2563eb; }
-        .btn-generate:disabled { background: #333; cursor: not-allowed; opacity: 0.5; }
-
-        /* --- VISTA PREVIA CENTRAL AMPLIA --- */
         #previewContainer { 
-            margin: 25px auto; 
-            border-radius: 15px; 
-            overflow: hidden; 
-            display: none; /* Asegura que no se muestre al principio */
-            border: 1px solid rgba(255,255,255,0.1);
-            max-width: 100%; 
-            background: #080808;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            margin: 40px auto; border-radius: 20px; overflow: hidden; 
+            display: none; border: 1px solid rgba(255,255,255,0.15); 
+            background: #080808; width: 100%;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.8);
         }
         #preview { width: 100%; height: auto; display: block; }
 
-        /* Área de descarga */
-        #downloadArea { display: none; margin-top: 20px; }
-        .btn-save { background: var(--success); color: white; border: none; }
-        .btn-save:hover { background: #059669; }
+        #downloadArea { display: none; margin-top: 25px; }
+        .btn-save { background: var(--success); border: none; }
         
-        /* --- REDES SOCIALES INTEGRADAS --- */
-        .social-section { margin: 40px 0; text-align: center; }
-        .social-dock { display: flex; justify-content: center; gap: 35px; flex-wrap: wrap; }
-        .social-link { 
-            color: var(--text); text-decoration: none; opacity: 0.6; 
-            display: flex; flex-direction: column; font-size: 1.8rem; transition: 0.3s;
-        }
-        .social-link:hover { opacity: 1; transform: translateY(-4px); color: var(--accent); }
-        .social-link span { font-size: 0.75rem; margin-top: 7px; color: var(--muted); }
+        .social-dock { display: flex; justify-content: center; gap: 35px; flex-wrap: wrap; margin-top: 50px; }
+        .social-link { color: var(--text); text-decoration: none; opacity: 0.6; display: flex; flex-direction: column; align-items: center; font-size: 2.2rem; transition: 0.3s; }
+        .social-link:hover { opacity: 1; color: var(--accent); transform: translateY(-5px); }
+        .social-link span { font-size: 0.8rem; margin-top: 10px; color: var(--muted); font-weight: 500; }
 
-        #loader { display: none; margin: 20px 0; color: var(--accent); font-size: 2.5rem; animation: spin 1s linear infinite; }
+        #loader { display: none; margin: 30px 0; color: var(--accent); font-size: 3.5rem; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
-
+        
         canvas { display: none; }
         input[type="file"] { display: none; }
-
-        @media (max-width: 600px) {
-            .brand-name { font-size: 2.1rem; }
-            header { padding: 40px 0 20px; }
-            .logo-main { width: 90px; }
-            .social-dock { gap: 15px; }
-            .social-link { font-size: 1.5rem; }
-        }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="logo.png" alt="Juano Ruiz Fotografía" class="logo-main">
+    <img src="logo.png" alt="Juano Ruiz" class="logo-main">
     <div class="brand-text-container">
         <h1 class="brand-name">SELLO DE LUZ</h1>
         <p class="brand-subtitle">Juano Ruiz Fotografía</p>
@@ -121,45 +91,37 @@
 
 <div class="container">
     <div class="card">
-        <label for="upload" class="btn-main">
-            <i class="fas fa-plus-circle"></i> &nbsp; CARGAR FOTOGRAFÍA (JPG)
-        </label>
+        <label for="upload" class="btn-main"><i class="fas fa-images"></i> &nbsp; CARGAR FOTOGRAFÍA</label>
         <input type="file" id="upload" accept="image/jpeg, image/jpg">
-
+        
         <button id="generateBtn" class="btn-main btn-generate" disabled>GENERAR SELLO PROFESIONAL</button>
         
-        <div id="loader"><i class="fas fa-spinner"></i></div>
+        <div id="loader"><i class="fas fa-circle-notch"></i></div>
 
         <div id="previewContainer">
-            <img id="preview" alt="Sello de Luz - Vista Previa">
+            <img id="preview" alt="Resultado Final">
         </div>
 
         <div id="downloadArea">
-            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
-                <a id="downloadBtn" class="btn-main btn-save" style="max-width: 230px;">
-                    <i class="fas fa-download"></i> DESCARGAR
-                </a>
-                <button id="shareBtn" class="btn-main" style="max-width: 230px;">
-                    <i class="fas fa-share-alt"></i> COMPARTIR
-                </button>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a id="downloadBtn" class="btn-main btn-save" style="max-width: 250px;"><i class="fas fa-cloud-download-alt"></i> DESCARGAR</a>
+                <button id="shareBtn" class="btn-main" style="max-width: 250px;"><i class="fas fa-share-nodes"></i> COMPARTIR</button>
             </div>
         </div>
     </div>
 
-    <div class="social-section">
-        <p style="color: var(--muted); letter-spacing: 2px; margin-bottom: 25px; font-weight: 700; font-size: 0.8rem;">CONECTAR</p>
-        <div class="social-dock">
-            <a href="https://wa.me/5491133832660" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
-            <a href="https://www.instagram.com/juanoruiz/" target="_blank" class="social-link"><i class="fab fa-instagram"></i><span>Instagram</span></a>
-            <a href="https://www.threads.net/@juanoruiz" target="_blank" class="social-link"><i class="fab fa-threads"></i><span>Threads</span></a>
-            <a href="https://www.facebook.com/Juan0Ruiz/" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i><span>Facebook</span></a>
-        </div>
+    <div class="social-dock">
+        <a href="https://wa.me/5491133832660" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+        <a href="https://www.instagram.com/juanoruiz/" target="_blank" class="social-link"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+        <a href="https://www.threads.net/@juanoruiz" target="_blank" class="social-link"><i class="fab fa-threads"></i><span>Threads</span></a>
+        <a href="https://www.facebook.com/Juan0Ruiz/" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i><span>Facebook</span></a>
     </div>
 </div>
 
 <canvas id="mainCanvas"></canvas>
 
 <script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/lite.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <script>
     const upload = document.getElementById('upload');
@@ -176,148 +138,127 @@
     let originalImg = new Image();
     let exifData = null;
 
-    // 1. Manejar la carga de la foto original
     upload.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
-
         loader.style.display = "block";
-        // Ocultar todo lo anterior y limpiar
-        downloadArea.style.display = "none";
         previewContainer.style.display = "none";
-        generateBtn.disabled = true;
-        originalImg.src = ""; // Limpiar imagen anterior
-        
+        downloadArea.style.display = "none";
+
         try {
-            // Leer datos técnicos COMPLETOS (lens: true rastrea LensModel)
-            exifData = await exifr.parse(file, { xmp: true, iptc: true, lens: true });
-            
-            // Cargar la imagen en memoria
+            exifData = await exifr.parse(file, { lens: true });
             const reader = new FileReader();
             reader.onload = (event) => {
                 originalImg.onload = () => {
                     loader.style.display = "none";
                     generateBtn.disabled = false;
-                    alert("Foto cargada con éxito. Pulsa 'GENERAR SELLO PROFESIONAL' para aplicar el diseño 'Plantilla Web'.");
                 };
                 originalImg.src = event.target.result;
             };
             reader.readAsDataURL(file);
-        } catch (err) { 
-            loader.style.display = "none";
-            alert("Error: No se pudieron leer los datos técnicos. Asegúrate de usar una foto original (JPG)."); 
-            console.error("Error EXIF:", err);
-        }
+        } catch (err) { loader.style.display = "none"; alert("Error al leer la foto."); }
     });
 
-    // 2. Generar el sello profesional y MOSTRAR la foto (SOLUCIÓN AL ERROR)
     generateBtn.addEventListener('click', () => {
         if (!originalImg.src) return;
-        
         loader.style.display = "block";
-        generateBtn.disabled = true;
 
-        // Pequeño delay para dejar respirar al navegador
-        setTimeout(() => {
-            // Configurar canvas al tamaño de la imagen original
+        setTimeout(async () => {
             canvas.width = originalImg.width;
             canvas.height = originalImg.height;
-
-            // --- PROCESAMIENTO CANAL (DISEÑO PLANTILLA BARRA INFERIOR) ---
-            // 1. Dibujar la foto original tal cual (Fondo claro, barra translúcida encima)
             ctx.drawImage(originalImg, 0, 0);
 
-            // 2. Preparar Datos EXIF (ISO, f, mm, EXP, Cámara, Lente Detallado)
-            const formatShutter = (e) => {
-                if (!e) return '?';
-                if (e >= 1) return Math.round(e * 10) / 10 + "s";
-                return `1/${Math.round(1/e)}`;
-            };
+            // 1. Datos EXIF
+            const cam = (exifData?.Model || "CÁMARA DIGITAL").toUpperCase();
+            const lens = (exifData?.LensModel || "LENTE OBJETIVO").toUpperCase();
+            const f = exifData?.FNumber ? `ƒ/${exifData.FNumber}` : 'ƒ/--';
+            const iso = exifData?.ISO ? `ISO ${exifData.ISO}` : 'ISO --';
+            const exp = exifData?.ExposureTime ? (exifData.ExposureTime >= 1 ? `${exifData.ExposureTime}s` : `1/${Math.round(1/exifData.ExposureTime)}s`) : '--s';
+            const mm = exifData?.FocalLength ? `${exifData.FocalLength}mm` : '--mm';
 
-            const specs = [
-                { i: "ƒ", v: exifData?.FNumber ? `/${exifData.FNumber}` : '/?' },
-                { i: "EXP", v: formatShutter(exifData?.ExposureTime) },
-                { i: "ISO", v: exifData?.ISO || '?' },
-                { i: "mm", v: exifData?.FocalLength ? exifData.FocalLength + 'mm' : '?' }
-            ];
-
-            // Datos avanzados de Lente y Cámara
-            const cameraModel = (exifData?.Model || "CÁMARA DIGITAL").toUpperCase();
-            // Buscar modelo de lente, si no lo arma
-            const lensModel = (exifData?.LensModel || exifData?.LensType || (exifData?.FocalLength ? `${exifData.FocalLength}mm Lens` : "LENTE ORIGINAL")).toUpperCase();
-
+            // 2. Proporciones
             const base = canvas.width / 100;
-            const barHeight = Math.round(base * 10); // Altura de la barra inferior proporcional
-            const fontSizeSpecs = Math.round(base * 2.8); // Tamaño de fuente base
-            const fontSizeLabel = Math.round(base * 1.6); // Tamaño de fuente para Cámara/Lente
+            const footerHeight = base * 12;
+            const padding = base * 4;
 
-            // 3. Dibujar la Barra Translúcida Inferior (Menos opaco, fiel a referencia)
-            ctx.fillStyle = "rgba(0, 0, 0, 0.6)"; // Opacidad 60% (rgba con alfa 0.6)
-            ctx.fillRect(0, canvas.height - barHeight, canvas.width, barHeight);
+            // 3. Fondo Degradado
+            const grad = ctx.createLinearGradient(0, canvas.height - footerHeight * 1.5, 0, canvas.height);
+            grad.addColorStop(0, "rgba(0,0,0,0)");
+            grad.addColorStop(1, "rgba(0,0,0,0.85)");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, canvas.height - footerHeight * 1.5, canvas.width, footerHeight * 1.5);
 
-            // 4. Dibujar Texto de forma horizontal cinemática
-            ctx.fillStyle = "white";
+            // 4. Icono de Cámara (Dibujado simple o texto con FontAwesome)
+            ctx.fillStyle = "var(--accent)";
+            ctx.font = `900 ${base * 2}px "Font Awesome 6 Free"`;
+            ctx.fillText("\uf030", padding, canvas.height - (footerHeight / 1.3)); // Icono Cámara
+
+            // 5. Textos Técnicos
             ctx.textAlign = "left";
             ctx.textBaseline = "middle";
-
-            // Margen izquierdo de la barra
-            const paddingLeft = Math.round(base * 4);
-            // Posición vertical de las dos líneas dentro de la barra
-            const topTextY = canvas.height - (barHeight * 0.7);
-            const bottomTextY = canvas.height - (barHeight * 0.3);
-
-            // Línea 1 (Superior): Cámara Body & Lente (Muy sutil, white)
-            ctx.font = `600 ${fontSizeLabel}px sans-serif`;
-            ctx.globalAlpha = 0.6; // Más sutil
-            ctx.fillText(`${cameraModel}  |  ${lensModel}`, paddingLeft, topTextY);
-            ctx.globalAlpha = 1.0;
-
-            // Línea 2 (Inferior): Datos Técnicos f / EXP / ISO / mm (Destacado, white, Bold Sans-Serif)
-            ctx.font = `700 ${fontSizeSpecs}px sans-serif`;
-            ctx.fillText(`${specs[0].v} f/${specs[0].v}  |  EXP ${specs[1].v}  |  ISO ${specs[2].v}  |  ${specs[3].v}`, paddingLeft, bottomTextY);
-
-            // 5. EXPORTAR Y MOSTRAR (SOLUCIÓN AL ERROR DE VISUALIZACIÓN CENTRAL)
-            const finalImage = canvas.toDataURL("image/jpeg", 0.95);
-            preview.src = finalImage;
             
-            // !!! ESTO ES LO QUE ARREGLA QUE LA FOTO NO ABRA !!!
-            // Mostrar el contenedor de la foto y el área de descarga
-            previewContainer.style.display = "block";
-            downloadArea.style.display = "block";
-            
-            // Ocultar loader y rehabilitar botón
-            loader.style.display = "none";
-            generateBtn.disabled = false;
+            // Equipo
+            ctx.fillStyle = "rgba(255,255,255,0.7)";
+            ctx.font = `600 ${base * 1.5}px 'Inter', sans-serif`;
+            ctx.fillText(`${cam}  |  ${lens}`, padding + (base * 3.5), canvas.height - (footerHeight / 1.3));
 
-            // Configurar botón de descarga
-            downloadBtn.href = finalImage;
-            downloadBtn.download = `SelloDeLuz_${Date.now()}.jpg`;
+            // Parámetros
+            ctx.fillStyle = "white";
+            ctx.font = `bold ${base * 3}px 'Inter', sans-serif`;
+            ctx.fillText(`${f}   ${exp}   ${iso}   ${mm}`, padding, canvas.height - (footerHeight / 2.5));
 
-            // Scroll suave hacia la foto procesada
-            previewContainer.scrollIntoView({ behavior: 'smooth' });
+            // 6. Firma y QR (Derecha)
+            const qrSize = base * 8;
+            const qrX = canvas.width - padding - qrSize;
+            const qrY = canvas.height - footerHeight + (base * 2);
 
-        }, 100); // Pequeño timeout
+            // Generar QR invisible en el DOM primero
+            const qrDiv = document.createElement("div");
+            new QRCode(qrDiv, {
+                text: "https://www.instagram.com/juanoruiz/",
+                width: 400,
+                height: 400,
+                colorDark: "#ffffff",
+                colorLight: "#00000000", // Transparente
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Esperar a que el QR se renderice y dibujarlo en Canvas
+            setTimeout(() => {
+                const qrImg = qrDiv.querySelector("img");
+                if(qrImg) {
+                    ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+                }
+
+                ctx.textAlign = "right";
+                ctx.fillStyle = "white";
+                ctx.font = `900 ${base * 2.2}px 'Inter', sans-serif`;
+                ctx.fillText("JUANO RUIZ", qrX - (base * 2), canvas.height - (footerHeight / 2.2));
+                
+                ctx.fillStyle = "rgba(255,255,255,0.5)";
+                ctx.font = `500 ${base * 1.1}px 'Inter', sans-serif`;
+                ctx.fillText("PH. DIGITAL ARTIST", qrX - (base * 2), canvas.height - (footerHeight / 3.5));
+
+                // Mostrar resultado
+                preview.src = canvas.toDataURL("image/jpeg", 0.95);
+                previewContainer.style.display = "block";
+                downloadArea.style.display = "block";
+                loader.style.display = "none";
+                generateBtn.disabled = false;
+                downloadBtn.href = preview.src;
+                downloadBtn.download = `SelloDeLuz_JuanoRuiz.jpg`;
+            }, 100);
+
+        }, 200);
     });
 
-    // 3. Funcionalidad del Botón Compartir (Móvil Nativa)
     shareBtn.addEventListener('click', async () => {
         try {
             const blob = await (await fetch(preview.src)).blob();
-            const sFile = new File([blob], 'foto-sellodeluz.jpg', { type: 'image/jpeg' });
-            if (navigator.canShare && navigator.canShare({ files: [sFile] })) {
-                await navigator.share({
-                    files: [sFile],
-                    title: 'Sello de Luz | Juano Ruiz Fotografía',
-                    text: 'Datos técnicos plasmados profesionalmente.'
-                });
-            } else {
-                alert("La función nativa de compartir está disponible en móviles. Usa 'DESCARGAR' en PC.");
-            }
-        } catch (err) {
-            console.error(err);
-        }
+            const file = new File([blob], 'SelloDeLuz.jpg', { type: 'image/jpeg' });
+            if (navigator.share) await navigator.share({ files: [file] });
+        } catch (e) { console.log("Error al compartir"); }
     });
-
 </script>
 </body>
 </html>
