@@ -10,55 +10,94 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        :root { --bg: #000000; --card-bg: #111111; --accent: #3b82f6; --success: #10b981; --text: #ffffff; --muted: #a1a1aa; }
+        :root { 
+            --bg: #000000; 
+            --card-bg: #111111; 
+            --accent: #3b82f6; 
+            --success: #10b981;
+            --text: #ffffff; 
+            --muted: #a1a1aa; 
+        }
         
         body { 
-            font-family: -apple-system, system-ui, sans-serif; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             background: var(--bg); color: var(--text); margin: 0;
             display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        header { padding: 50px 0 30px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .logo-main { width: 100px; height: auto; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
-        .brand-name { font-size: 3.2rem; font-weight: 900; letter-spacing: -2px; line-height: 1; margin: 0; text-transform: uppercase; text-align: center; }
-        .brand-subtitle { font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-top: 5px; text-align: center; }
+        /* --- CABECERA --- */
+        header { 
+            padding: 60px 0 30px; width: 100%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;
+        }
+        .logo-main { width: 110px; height: auto; filter: drop-shadow(0 0 15px rgba(255,255,255,0.1)); }
+        
+        .brand-name {
+            font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 900; letter-spacing: -2px; 
+            line-height: 1; margin: 0; text-transform: uppercase; text-align: center;
+        }
+        .brand-subtitle { 
+            font-size: 0.9rem; letter-spacing: 5px; text-transform: uppercase; 
+            color: var(--muted); margin-top: 5px; text-align: center; 
+        }
 
-        .container { width: 95%; max-width: 850px; padding-bottom: 50px; }
-        .card { background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
+        /* --- CONTENEDOR PRINCIPAL --- */
+        .container { width: 95%; max-width: 900px; padding-bottom: 60px; }
+
+        .card { 
+            background: var(--card-bg); padding: 40px; border-radius: 25px; 
+            border: 1px solid rgba(255,255,255,0.05); text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
 
         .btn-main {
             background: transparent; color: var(--text); padding: 18px; border-radius: 12px;
             font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
-            width: 100%; max-width: 380px; border: 1px solid rgba(255,255,255,0.2);
-            margin: 10px auto; text-decoration: none; font-size: 1rem; transition: 0.2s;
+            width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.2);
+            margin: 10px auto; text-decoration: none; font-size: 1.1rem; transition: 0.3s;
         }
-        .btn-generate { background: var(--accent); border: none; }
-        .btn-generate:disabled { background: #222; opacity: 0.5; }
+        .btn-main:hover { background: rgba(255,255,255,0.05); border-color: var(--text); }
+        .btn-generate { background: var(--accent); border: none; color: white; }
+        .btn-generate:disabled { background: #222; opacity: 0.4; cursor: not-allowed; }
 
-        /* VISTA PREVIA CENTRAL */
-        #previewContainer { margin: 25px auto; border-radius: 12px; overflow: hidden; display: none; border: 1px solid rgba(255,255,255,0.1); background: #080808; }
+        /* --- VISTA PREVIA CENTRAL --- */
+        #previewContainer { 
+            margin: 35px auto; border-radius: 15px; overflow: hidden; 
+            display: none; border: 1px solid rgba(255,255,255,0.1); 
+            background: #080808; width: 100%;
+        }
         #preview { width: 100%; height: auto; display: block; }
 
-        #downloadArea { display: none; margin-top: 20px; }
+        #downloadArea { display: none; margin-top: 25px; }
         .btn-save { background: var(--success); border: none; }
         
-        /* REDES SOCIALES MÁS ARRIBA */
-        .social-section { margin: 30px 0; text-align: center; }
-        .social-dock { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
-        .social-link { color: var(--text); text-decoration: none; opacity: 0.6; display: flex; flex-direction: column; font-size: 1.8rem; transition: 0.3s; }
-        .social-link:hover { opacity: 1; color: var(--accent); }
-        .social-link span { font-size: 0.7rem; margin-top: 5px; color: var(--muted); }
+        /* --- REDES SOCIALES --- */
+        .social-section { margin-top: 40px; text-align: center; width: 100%; }
+        .social-dock { display: flex; justify-content: center; gap: 35px; flex-wrap: wrap; }
+        .social-link { 
+            color: var(--text); text-decoration: none; opacity: 0.6; 
+            display: flex; flex-direction: column; font-size: 2rem; transition: 0.3s;
+        }
+        .social-link:hover { opacity: 1; transform: translateY(-5px); color: var(--accent); }
+        .social-link span { font-size: 0.75rem; margin-top: 8px; color: var(--muted); font-weight: 600; }
 
-        #loader { display: none; margin: 20px 0; color: var(--accent); font-size: 2.5rem; animation: spin 1s linear infinite; }
+        #loader { display: none; margin: 20px 0; color: var(--accent); font-size: 3rem; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         canvas { display: none; }
         input[type="file"] { display: none; }
+
+        @media (max-width: 600px) {
+            .brand-name { font-size: 2.2rem; }
+            header { padding: 40px 0 20px; }
+            .logo-main { width: 90px; }
+            .social-dock { gap: 20px; }
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <img src="logo.png" alt="Logo" class="logo-main">
+    <img src="logo.png" alt="Juano Ruiz" class="logo-main">
     <div class="brand-text-container">
         <h1 class="brand-name">SELLO DE LUZ</h1>
         <p class="brand-subtitle">Juano Ruiz Fotografía</p>
@@ -67,17 +106,21 @@
 
 <div class="container">
     <div class="card">
-        <label for="upload" class="btn-main"><i class="fas fa-plus-circle"></i> &nbsp; CARGAR FOTOGRAFÍA</label>
+        <label for="upload" class="btn-main"><i class="fas fa-plus-circle"></i> &nbsp; CARGAR FOTOGRAFÍA (JPG)</label>
         <input type="file" id="upload" accept="image/jpeg, image/jpg">
+        
         <button id="generateBtn" class="btn-main btn-generate" disabled>GENERAR SELLO PROFESIONAL</button>
-        <div id="loader"><i class="fas fa-spinner"></i></div>
+        
+        <div id="loader"><i class="fas fa-circle-notch"></i></div>
 
-        <div id="previewContainer"><img id="preview"></div>
+        <div id="previewContainer">
+            <img id="preview" alt="Sello de Luz - Resultado">
+        </div>
 
         <div id="downloadArea">
-            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <a id="downloadBtn" class="btn-main btn-save" style="max-width: 200px;">DESCARGAR</a>
-                <button id="shareBtn" class="btn-main" style="max-width: 200px;">COMPARTIR</button>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a id="downloadBtn" class="btn-main btn-save" style="max-width: 250px;"><i class="fas fa-download"></i> DESCARGAR</a>
+                <button id="shareBtn" class="btn-main" style="max-width: 250px;"><i class="fas fa-share-alt"></i> COMPARTIR</button>
             </div>
         </div>
     </div>
@@ -93,6 +136,7 @@
 </div>
 
 <canvas id="mainCanvas"></canvas>
+
 <script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/lite.umd.js"></script>
 
 <script>
@@ -113,90 +157,123 @@
     upload.addEventListener('change', async (e) => {
         const file = e.target.files[0];
         if (!file) return;
+
         loader.style.display = "block";
+        previewContainer.style.display = "none";
+        downloadArea.style.display = "none";
+
         try {
-            exifData = await exifr.parse(file);
+            // Buscamos específicamente info del lente (lens: true)
+            exifData = await exifr.parse(file, { lens: true, xmp: true });
+            
             const reader = new FileReader();
             reader.onload = (event) => {
                 originalImg.onload = () => {
                     loader.style.display = "none";
                     generateBtn.disabled = false;
+                    alert("Foto lista para procesar.");
                 };
                 originalImg.src = event.target.result;
             };
             reader.readAsDataURL(file);
-        } catch (err) { loader.style.display = "none"; alert("Error al cargar."); }
+        } catch (err) { 
+            loader.style.display = "none"; 
+            alert("No se detectaron metadatos en esta foto."); 
+        }
     });
 
     generateBtn.addEventListener('click', () => {
-        canvas.width = originalImg.width;
-        canvas.height = originalImg.height;
-        ctx.filter = `blur(${Math.round(canvas.width / 75)}px) brightness(0.8)`;
-        ctx.drawImage(originalImg, 0, 0);
-        ctx.filter = 'none';
+        if (!originalImg.src) return;
+        loader.style.display = "block";
 
-        // DATOS MEJORADOS
-        const camera = (exifData?.Model || "CÁMARA").toUpperCase();
-        const lens = (exifData?.LensModel || exifData?.LensType || (exifData?.FocalLength ? exifData.FocalLength + "mm Lens" : "LENTE")).toUpperCase();
-        
-        const specs = [
-            { i: "ƒ", v: exifData?.FNumber ? `/${exifData.FNumber}` : '/?' },
-            { i: "EXP", v: exifData?.ExposureTime ? (exifData.ExposureTime >= 1 ? exifData.ExposureTime + "s" : `1/${Math.round(1/exifData.ExposureTime)}`) : '?' },
-            { i: "ISO", v: exifData?.ISO || '?' },
-            { i: "mm", v: exifData?.FocalLength ? exifData.FocalLength + 'mm' : '?' }
-        ];
+        // Delay para que el navegador procese el renderizado
+        setTimeout(() => {
+            canvas.width = originalImg.width;
+            canvas.height = originalImg.height;
+            
+            // Fondo con desenfoque
+            ctx.filter = `blur(${Math.round(canvas.width / 75)}px) brightness(0.8)`;
+            ctx.drawImage(originalImg, 0, 0);
+            ctx.filter = 'none';
 
-        const base = canvas.width / 100;
-        const fontSize = Math.round(base * 4.4);
-        const rectW = fontSize * 18;
-        const rectH = (fontSize * 2.2 * specs.length) + (fontSize * 7);
-        const x = (canvas.width / 2) - (rectW / 2);
-        const y = (canvas.height / 2) - (rectH / 2);
+            // Datos Técnicos Avanzados
+            const cameraModel = (exifData?.Model || "CÁMARA DIGITAL").toUpperCase();
+            const fullLens = (exifData?.LensModel || exifData?.LensType || (exifData?.FocalLength ? exifData.FocalLength + "mm Lens" : "LENTE")).toUpperCase();
+            
+            const specs = [
+                { i: "ƒ", v: exifData?.FNumber ? `/${exifData.FNumber}` : '/?' },
+                { i: "EXP", v: exifData?.ExposureTime ? (exifData.ExposureTime >= 1 ? exifData.ExposureTime + "s" : `1/${Math.round(1/exifData.ExposureTime)}`) : '?' },
+                { i: "ISO", v: exifData?.ISO || '?' },
+                { i: "mm", v: exifData?.FocalLength ? exifData.FocalLength + 'mm' : '?' }
+            ];
 
-        ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
-        ctx.beginPath();
-        ctx.roundRect(x, y, rectW, rectH, fontSize);
-        ctx.fill();
+            const base = canvas.width / 100;
+            const fontSize = Math.round(base * 4.4);
+            const rectW = fontSize * 18.5;
+            const rectH = (fontSize * 2.2 * specs.length) + (fontSize * 7);
+            const x = (canvas.width / 2) - (rectW / 2);
+            const y = (canvas.height / 2) - (rectH / 2);
 
-        ctx.fillStyle = "white";
-        ctx.textAlign = "left";
-        
-        // Cámara
-        ctx.font = `bold ${fontSize * 0.75}px sans-serif`;
-        ctx.globalAlpha = 0.5;
-        ctx.fillText(camera, x + (fontSize * 2), y + (fontSize * 2));
-        
-        // Especificaciones
-        ctx.globalAlpha = 1;
-        specs.forEach((s, i) => {
-            const yPos = y + (fontSize * 4.5) + (i * fontSize * 2);
-            ctx.font = `italic 700 ${fontSize * 0.9}px serif`;
-            ctx.fillText(s.i, x + (fontSize * 2), yPos);
-            ctx.font = `600 ${fontSize}px sans-serif`;
-            ctx.fillText(s.v, x + (fontSize * 5.5), yPos);
-        });
+            // Caja de cristal sutil
+            ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
+            ctx.beginPath();
+            ctx.roundRect(x, y, rectW, rectH, fontSize);
+            ctx.fill();
 
-        // Lente (Nombre completo)
-        ctx.font = `500 ${fontSize * 0.6}px sans-serif`;
-        ctx.globalAlpha = 0.4;
-        ctx.fillText(lens, x + (fontSize * 2), y + rectH - (fontSize * 1.5));
-        ctx.globalAlpha = 1;
+            ctx.fillStyle = "white";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "middle";
+            
+            // Título de la Cámara
+            ctx.font = `bold ${fontSize * 0.75}px sans-serif`;
+            ctx.globalAlpha = 0.5;
+            ctx.fillText(cameraModel, x + (fontSize * 2), y + (fontSize * 2.2));
+            
+            // Iconos y Valores EXIF
+            ctx.globalAlpha = 1;
+            specs.forEach((s, i) => {
+                const yPos = y + (fontSize * 4.8) + (i * fontSize * 2.1);
+                ctx.font = `italic 700 ${fontSize * 0.9}px serif`;
+                ctx.fillText(s.i, x + (fontSize * 2.2), yPos);
+                ctx.font = `600 ${fontSize}px sans-serif`;
+                ctx.fillText(s.v, x + (fontSize * 6), yPos);
+            });
 
-        preview.src = canvas.toDataURL("image/jpeg", 0.95);
-        previewContainer.style.display = "block";
-        downloadArea.style.display = "block";
-        downloadBtn.href = preview.src;
-        downloadBtn.download = `SelloDeLuz_${Date.now()}.jpg`;
+            // Nombre del Lente (Pie del sello)
+            ctx.font = `500 ${fontSize * 0.65}px sans-serif`;
+            ctx.globalAlpha = 0.4;
+            ctx.fillText(fullLens, x + (fontSize * 2.2), y + rectH - (fontSize * 1.8));
+            ctx.globalAlpha = 1;
+
+            // Exportar resultado
+            const finalData = canvas.toDataURL("image/jpeg", 0.95);
+            preview.src = finalData;
+            
+            // MOSTRAR CONTENEDORES
+            previewContainer.style.display = "block";
+            downloadArea.style.display = "block";
+            loader.style.display = "none";
+            
+            downloadBtn.href = finalData;
+            downloadBtn.download = `SelloDeLuz_JuanoRuiz_${Date.now()}.jpg`;
+            
+            // Scroll automático a la imagen
+            previewContainer.scrollIntoView({ behavior: 'smooth' });
+
+        }, 150);
     });
 
+    // Botón Compartir (Móvil)
     shareBtn.addEventListener('click', async () => {
-        const blob = await (await fetch(preview.src)).blob();
-        const file = new File([blob], 'foto.jpg', { type: 'image/jpeg' });
-        if (navigator.share) {
-            await navigator.share({ files: [file] });
-        } else {
-            alert("Usa el botón DESCARGAR.");
-        }
+        try {
+            const blob = await (await fetch(preview.src)).blob();
+            const file = new File([blob], 'foto-sellodeluz.jpg', { type: 'image/jpeg' });
+            if (navigator.share) {
+                await navigator.share({ files: [file], title: 'Sello de Luz' });
+            } else {
+                alert("Para compartir en PC, utiliza el botón DESCARGAR.");
+            }
+        } catch (e) { alert("Error al compartir."); }
     });
 </script>
 </body>
