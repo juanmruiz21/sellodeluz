@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sello de Luz | Juano Ruiz Fotografía</title>
+    
+    <link rel="shortcut icon" type="image/png" href="logo.png">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root { --bg: #000000; --card-bg: #111111; --accent: #3b82f6; --success: #10b981; --text: #ffffff; --muted: #a1a1aa; }
+        
+        body { 
+            font-family: -apple-system, system-ui, sans-serif; 
+            background: var(--bg); color: var(--text); margin: 0;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
+        }
+
+        header { padding: 50px 0 30px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .logo-main { width: 100px; height: auto; filter: drop-shadow(0 0 10px rgba(255,255,255,0.1)); }
+        .brand-name { font-size: 3.2rem; font-weight: 900; letter-spacing: -2px; line-height: 1; margin: 0; text-transform: uppercase; text-align: center; }
+        .brand-subtitle { font-size: 0.9rem; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-top: 5px; text-align: center; }
+
+        .container { width: 95%; max-width: 850px; padding-bottom: 50px; }
+        .card { background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
+
+        .btn-main {
+            background: transparent; color: var(--text); padding: 18px; border-radius: 12px;
+            font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+            width: 100%; max-width: 380px; border: 1px solid rgba(255,255,255,0.2);
+            margin: 10px auto; text-decoration: none; font-size: 1rem; transition: 0.2s;
+        }
+        .btn-generate { background: var(--accent); border: none; }
+        .btn-generate:disabled { background: #222; opacity: 0.5; }
+
+        /* VISTA PREVIA CENTRAL */
+        #previewContainer { margin: 25px auto; border-radius: 12px; overflow: hidden; display: none; border: 1px solid rgba(255,255,255,0.1); background: #080808; }
+        #preview { width: 100%; height: auto; display: block; }
+
+        #downloadArea { display: none; margin-top: 20px; }
+        .btn-save { background: var(--success); border: none; }
+        
+        /* REDES SOCIALES MÁS ARRIBA */
+        .social-section { margin: 30px 0; text-align: center; }
+        .social-dock { display: flex; justify-content: center; gap: 30px; flex-wrap: wrap; }
+        .social-link { color: var(--text); text-decoration: none; opacity: 0.6; display: flex; flex-direction: column; font-size: 1.8rem; transition: 0.3s; }
+        .social-link:hover { opacity: 1; color: var(--accent); }
+        .social-link span { font-size: 0.7rem; margin-top: 5px; color: var(--muted); }
+
+        #loader { display: none; margin: 20px 0; color: var(--accent); font-size: 2.5rem; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        canvas { display: none; }
+        input[type="file"] { display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="logo.png" alt="Logo" class="logo-main">
+    <div class="brand-text-container">
+        <h1 class="brand-name">SELLO DE LUZ</h1>
+        <p class="brand-subtitle">Juano Ruiz Fotografía</p>
+    </div>
+</header>
+
+<div class="container">
+    <div class="card">
+        <label for="upload" class="btn-main"><i class="fas fa-plus-circle"></i> &nbsp; CARGAR FOTOGRAFÍA</label>
+        <input type="file" id="upload" accept="image/jpeg, image/jpg">
+        <button id="generateBtn" class="btn-main btn-generate" disabled>GENERAR SELLO PROFESIONAL</button>
+        <div id="loader"><i class="fas fa-spinner"></i></div>
+
+        <div id="previewContainer"><img id="preview"></div>
+
+        <div id="downloadArea">
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <a id="downloadBtn" class="btn-main btn-save" style="max-width: 200px;">DESCARGAR</a>
+                <button id="shareBtn" class="btn-main" style="max-width: 200px;">COMPARTIR</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="social-section">
+        <div class="social-dock">
+            <a href="https://wa.me/5491133832660" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+            <a href="https://www.instagram.com/juanoruiz/" target="_blank" class="social-link"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+            <a href="https://www.threads.net/@juanoruiz" target="_blank" class="social-link"><i class="fab fa-threads"></i><span>Threads</span></a>
+            <a href="https://www.facebook.com/Juan0Ruiz/" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i><span>Facebook</span></a>
+        </div>
+    </div>
+</div>
+
+<canvas id="mainCanvas"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/lite.umd.js"></script>
+
+<script>
+    const upload = document.getElementById('upload');
+    const generateBtn = document.getElementById('generateBtn');
+    const preview = document.getElementById('preview');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const downloadArea = document.getElementById('downloadArea');
+    const previewContainer = document.getElementById('previewContainer');
+    const loader = document.getElementById('loader');
+    const canvas = document.getElementById('mainCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    let originalImg = new Image();
+    let exifData = null;
+
+    upload.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        loader.style.display = "block";
+        try {
+            exifData = await exifr.parse(file);
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                originalImg.onload = () => {
+                    loader.style.display = "none";
+                    generateBtn.disabled = false;
+                };
+                originalImg.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        } catch (err) { loader.style.display = "none"; alert("Error al cargar."); }
+    });
+
+    generateBtn.addEventListener('click', () => {
+        canvas.width = originalImg.width;
+        canvas.height = originalImg.height;
+        ctx.filter = `blur(${Math.round(canvas.width / 75)}px) brightness(0.8)`;
+        ctx.drawImage(originalImg, 0, 0);
+        ctx.filter = 'none';
+
+        // DATOS MEJORADOS
+        const camera = (exifData?.Model || "CÁMARA").toUpperCase();
+        const lens = (exifData?.LensModel || exifData?.LensType || (exifData?.FocalLength ? exifData.FocalLength + "mm Lens" : "LENTE")).toUpperCase();
+        
+        const specs = [
+            { i: "ƒ", v: exifData?.FNumber ? `/${exifData.FNumber}` : '/?' },
+            { i: "EXP", v: exifData?.ExposureTime ? (exifData.ExposureTime >= 1 ? exifData.ExposureTime + "s" : `1/${Math.round(1/exifData.ExposureTime)}`) : '?' },
+            { i: "ISO", v: exifData?.ISO || '?' },
+            { i: "mm", v: exifData?.FocalLength ? exifData.FocalLength + 'mm' : '?' }
+        ];
+
+        const base = canvas.width / 100;
+        const fontSize = Math.round(base * 4.4);
+        const rectW = fontSize * 18;
+        const rectH = (fontSize * 2.2 * specs.length) + (fontSize * 7);
+        const x = (canvas.width / 2) - (rectW / 2);
+        const y = (canvas.height / 2) - (rectH / 2);
+
+        ctx.fillStyle = "rgba(0, 0, 0, 0.45)";
+        ctx.beginPath();
+        ctx.roundRect(x, y, rectW, rectH, fontSize);
+        ctx.fill();
+
+        ctx.fillStyle = "white";
+        ctx.textAlign = "left";
+        
+        // Cámara
+        ctx.font = `bold ${fontSize * 0.75}px sans-serif`;
+        ctx.globalAlpha = 0.5;
+        ctx.fillText(camera, x + (fontSize * 2), y + (fontSize * 2));
+        
+        // Especificaciones
+        ctx.globalAlpha = 1;
+        specs.forEach((s, i) => {
+            const yPos = y + (fontSize * 4.5) + (i * fontSize * 2);
+            ctx.font = `italic 700 ${fontSize * 0.9}px serif`;
+            ctx.fillText(s.i, x + (fontSize * 2), yPos);
+            ctx.font = `600 ${fontSize}px sans-serif`;
+            ctx.fillText(s.v, x + (fontSize * 5.5), yPos);
+        });
+
+        // Lente (Nombre completo)
+        ctx.font = `500 ${fontSize * 0.6}px sans-serif`;
+        ctx.globalAlpha = 0.4;
+        ctx.fillText(lens, x + (fontSize * 2), y + rectH - (fontSize * 1.5));
+        ctx.globalAlpha = 1;
+
+        preview.src = canvas.toDataURL("image/jpeg", 0.95);
+        previewContainer.style.display = "block";
+        downloadArea.style.display = "block";
+        downloadBtn.href = preview.src;
+        downloadBtn.download = `SelloDeLuz_${Date.now()}.jpg`;
+    });
+
+    shareBtn.addEventListener('click', async () => {
+        const blob = await (await fetch(preview.src)).blob();
+        const file = new File([blob], 'foto.jpg', { type: 'image/jpeg' });
+        if (navigator.share) {
+            await navigator.share({ files: [file] });
+        } else {
+            alert("Usa el botón DESCARGAR.");
+        }
+    });
+</script>
+</body>
+</html>
