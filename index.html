@@ -3,139 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sello de Luz - Editor EXIF</title>
+    <title>Sello de Luz | Juano Ruiz Fotografía</title>
+    
+    <link rel="shortcut icon" type="image/png" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    
     <style>
-        /* Configuración de la Base */
-        body {
-            margin: 0;
-            padding: 20px;
-            background-color: #1a1a1a;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        :root { 
+            --bg: #000000; 
+            --card-bg: #111111; 
+            --accent: #3b82f6; 
+            --success: #10b981; 
+            --text: #ffffff; 
+            --muted: #a1a1aa; 
+        }
+        
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: var(--bg); color: var(--text); margin: 0;
+            display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        /* Contenedor de la Imagen */
-        .contenedor-imagen {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        header { padding: 80px 0 40px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 25px; }
+        
+        /* LOGO PRINCIPAL MÁS GRANDE */
+        .logo-main { 
+            width: 280px; /* Aumentado */
+            height: auto; 
+            filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3)); 
+            transition: 0.5s ease; 
+        }
+        .logo-main:hover { transform: scale(1.05); }
+        
+        .brand-name { font-size: clamp(2.8rem, 10vw, 4.5rem); font-weight: 900; letter-spacing: -3px; line-height: 1; margin: 0; text-transform: uppercase; text-align: center; }
+        .brand-subtitle { font-size: 1.1rem; letter-spacing: 8px; text-transform: uppercase; color: var(--muted); margin-top: 10px; text-align: center; }
+
+        .container { width: 95%; max-width: 900px; padding-bottom: 60px; }
+        .card { 
+            background: var(--card-bg); padding: 40px; border-radius: 30px; 
+            border: 1px solid rgba(255,255,255,0.08); text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
         }
 
-        .foto-original {
-            width: 100%;
-            display: block;
+        .btn-main {
+            background: transparent; color: var(--text); padding: 22px; border-radius: 18px;
+            font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+            width: 100%; max-width: 420px; border: 1px solid rgba(255,255,255,0.2);
+            margin: 12px auto; text-decoration: none; font-size: 1.15rem; transition: 0.3s;
         }
+        .btn-generate { background: var(--accent); border: none; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); }
+        .btn-generate:hover:not(:disabled) { background: #2563eb; transform: translateY(-2px); }
+        .btn-generate:disabled { background: #222; opacity: 0.5; cursor: not-allowed; }
 
-        /* EL RECUADRO TRASLÚCIDO (Efecto Vidrio) */
-        .tarjeta-exif {
-            position: absolute;
-            bottom: 3%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%; /* Ocupa casi la totalidad */
-            
-            /* Efecto Traslúcido Moderno */
-            background: rgba(255, 255, 255, 0.15); 
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 15px;
-            color: white;
-            box-sizing: border-box;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        #previewContainer { 
+            margin: 40px auto; border-radius: 20px; overflow: hidden; 
+            display: none; border: 1px solid rgba(255,255,255,0.15); 
+            background: #080808; width: 100%;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.8);
         }
+        #preview { width: 100%; height: auto; display: block; }
 
-        /* Estilo de los datos */
-        .fila-datos {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-            align-items: center;
-            gap: 10px;
-        }
+        #downloadArea { display: none; margin-top: 25px; }
+        .btn-save { background: var(--success); border: none; }
+        
+        .social-dock { display: flex; justify-content: center; gap: 35px; flex-wrap: wrap; margin-top: 50px; }
+        .social-link { color: var(--text); text-decoration: none; opacity: 0.6; display: flex; flex-direction: column; align-items: center; font-size: 2.2rem; transition: 0.3s; }
+        .social-link:hover { opacity: 1; color: var(--accent); transform: translateY(-5px); }
+        .social-link span { font-size: 0.8rem; margin-top: 10px; color: var(--muted); font-weight: 500; }
 
-        .dato-item {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        /* Iconos SVG integrados (No dependen de internet) */
-        .icon {
-            width: 18px;
-            height: 18px;
-            fill: #ffffff;
-        }
-
-        /* Apartado de Iluminación Manual */
-        .iluminacion-seccion {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            font-size: 13px;
-            width: 100%;
-            display: flex;
-            gap: 10px;
-        }
-
-        /* El texto que puedes editar con un toque */
-        .editable {
-            background: rgba(0,0,0,0.2);
-            padding: 2px 8px;
-            border-radius: 4px;
-            border: 1px dashed rgba(255,255,255,0.4);
-            flex-grow: 1;
-            outline: none;
-        }
+        #loader { display: none; margin: 30px 0; color: var(--accent); font-size: 3.5rem; animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        
+        canvas { display: none; }
+        input[type="file"] { display: none; }
     </style>
 </head>
 <body>
 
-    <h2 style="color: white;">Sello de Luz</h2>
-    <p style="color: #aaa; font-size: 12px;">Modo Edición - Vista Previa</p>
+<header>
+    <img src="logo.png" alt="Juano Ruiz" class="logo-main">
+    <div class="brand-text-container">
+        <h1 class="brand-name">SELLO DE LUZ</h1>
+        <p class="brand-subtitle">Juano Ruiz Fotografía</p>
+    </div>
+</header>
 
-    <div class="contenedor-imagen">
-        <img src="https://images.unsplash.com/photo-1452570053594-1b985d6ea890?auto=format&fit=crop&w=800&q=80" class="foto-original" alt="Fotografía">
+<div class="container">
+    <div class="card">
+        <label for="upload" class="btn-main"><i class="fas fa-images"></i> &nbsp; CARGAR FOTOGRAFÍA</label>
+        <input type="file" id="upload" accept="image/jpeg, image/jpg">
+        
+        <button id="generateBtn" class="btn-main btn-generate" disabled>GENERAR SELLO PROFESIONAL</button>
+        
+        <div id="loader"><i class="fas fa-circle-notch"></i></div>
 
-        <div class="tarjeta-exif">
-            <div class="fila-datos">
-                <div class="dato-item">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2m8 3a5 5 0 1 0 5 5 5 5 0 0 0-5-5m0 2a3 3 0 1 1-3 3 3 3 0 0 1 3-3Z"/></svg>
-                    <span>Nikon D7200</span>
-                </div>
+        <div id="previewContainer">
+            <img id="preview" alt="Resultado Final">
+        </div>
 
-                <div class="dato-item">
-                    <svg class="icon" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8m0-12.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5m0 7A2.5 2.5 0 1 1 14.5 12 2.5 2.5 0 0 1 12 14.5Z"/></svg>
-                    <span>Sigma 17-50mm f/2.8</span>
-                </div>
-
-                <div class="dato-item"><strong>f/</strong> 2.8</div>
-                <div class="dato-item"><strong>⏲</strong> 1/125s</div>
-                <div class="dato-item"><strong>ISO</strong> 400</div>
-                <div class="dato-item"><strong>📏</strong> 55mm</div>
-            </div>
-
-            <div class="iluminacion-seccion">
-                <span>💡 Iluminación:</span>
-                <div class="editable" contenteditable="true">
-                    Toca aquí para escribir (ej. Softbox lateral a 45°)
-                </div>
+        <div id="downloadArea">
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a id="downloadBtn" class="btn-main btn-save" style="max-width: 250px;"><i class="fas fa-cloud-download-alt"></i> DESCARGAR</a>
+                <button id="shareBtn" class="btn-main" style="max-width: 250px;"><i class="fas fa-share-nodes"></i> COMPARTIR</button>
             </div>
         </div>
     </div>
 
-    <p style="color: #666; font-size: 11px; margin-top: 20px;">
-        Sello de Luz - Proyecto de Juan Manuel Ruiz
-    </p>
+    <div class="social-dock">
+        <a href="https://wa.me/5491133832660" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
+        <a href="https://www.instagram.com/juanoruiz/" target="_blank" class="social-link"><i class="fab fa-instagram"></i><span>Instagram</span></a>
+        <a href="https://www.threads.net/@juanoruiz" target="_blank" class="social-link"><i class="fab fa-threads"></i><span>Threads</span></a>
+        <a href="https://www.facebook.com/Juan0Ruiz/" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i><span>Facebook</span></a>
+    </div>
+</div>
 
+<canvas id="mainCanvas"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/exifr@7.1.3/dist/lite.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<script>
+    const upload = document.getElementById('upload');
+    const generateBtn = document.getElementById('generateBtn');
+    const preview = document.getElementById('preview');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const shareBtn = document.getElementById('shareBtn');
+    const downloadArea = document.getElementById('downloadArea');
+    const previewContainer = document.getElementById('previewContainer');
+    const loader = document.getElementById('loader');
+    const canvas = document.getElementById('mainCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    let originalImg = new Image();
+    let exifData = null;
+
+    upload.addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        loader.style.display = "block";
+        previewContainer.style.display = "none";
+        downloadArea.style.display = "none";
+
+        try {
+            exifData = await exifr.parse(file, { lens: true });
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                originalImg.onload = () => {
+                    loader.style.display = "none";
+                    generateBtn.disabled = false;
+                };
+                originalImg.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+        } catch (err) { loader.style.display = "none"; alert("Error al leer la foto."); }
+    });
+
+    generateBtn.addEventListener('click', () => {
+        if (!originalImg.src) return;
+        loader.style.display = "block";
+
+        setTimeout(async () => {
+            canvas.width = originalImg.width;
+            canvas.height = originalImg.height;
+            ctx.drawImage(originalImg, 0, 0);
+
+            // 1. Datos EXIF
+            const cam = (exifData?.Model || "CÁMARA DIGITAL").toUpperCase();
+            const lens = (exifData?.LensModel || "LENTE OBJETIVO").toUpperCase();
+            const f = exifData?.FNumber ? `ƒ/${exifData.FNumber}` : 'ƒ/--';
+            const iso = exifData?.ISO ? `ISO ${exifData.ISO}` : 'ISO --';
+            const exp = exifData?.ExposureTime ? (exifData.ExposureTime >= 1 ? `${exifData.ExposureTime}s` : `1/${Math.round(1/exifData.ExposureTime)}s`) : '--s';
+            const mm = exifData?.FocalLength ? `${exifData.FocalLength}mm` : '--mm';
+
+            // 2. Proporciones
+            const base = canvas.width / 100;
+            const footerHeight = base * 12;
+            const padding = base * 4;
+
+            // 3. Fondo Degradado
+            const grad = ctx.createLinearGradient(0, canvas.height - footerHeight * 1.5, 0, canvas.height);
+            grad.addColorStop(0, "rgba(0,0,0,0)");
+            grad.addColorStop(1, "rgba(0,0,0,0.85)");
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, canvas.height - footerHeight * 1.5, canvas.width, footerHeight * 1.5);
+
+            // 4. Icono de Cámara (Dibujado simple o texto con FontAwesome)
+            ctx.fillStyle = "var(--accent)";
+            ctx.font = `900 ${base * 2}px "Font Awesome 6 Free"`;
+            ctx.fillText("\uf030", padding, canvas.height - (footerHeight / 1.3)); // Icono Cámara
+
+            // 5. Textos Técnicos
+            ctx.textAlign = "left";
+            ctx.textBaseline = "middle";
+            
+            // Equipo
+            ctx.fillStyle = "rgba(255,255,255,0.7)";
+            ctx.font = `600 ${base * 1.5}px 'Inter', sans-serif`;
+            ctx.fillText(`${cam}  |  ${lens}`, padding + (base * 3.5), canvas.height - (footerHeight / 1.3));
+
+            // Parámetros
+            ctx.fillStyle = "white";
+            ctx.font = `bold ${base * 3}px 'Inter', sans-serif`;
+            ctx.fillText(`${f}   ${exp}   ${iso}   ${mm}`, padding, canvas.height - (footerHeight / 2.5));
+
+            // 6. Firma y QR (Derecha)
+            const qrSize = base * 8;
+            const qrX = canvas.width - padding - qrSize;
+            const qrY = canvas.height - footerHeight + (base * 2);
+
+            // Generar QR invisible en el DOM primero
+            const qrDiv = document.createElement("div");
+            new QRCode(qrDiv, {
+                text: "https://www.instagram.com/juanoruiz/",
+                width: 400,
+                height: 400,
+                colorDark: "#ffffff",
+                colorLight: "#00000000", // Transparente
+                correctLevel: QRCode.CorrectLevel.H
+            });
+
+            // Esperar a que el QR se renderice y dibujarlo en Canvas
+            setTimeout(() => {
+                const qrImg = qrDiv.querySelector("img");
+                if(qrImg) {
+                    ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+                }
+
+                ctx.textAlign = "right";
+                ctx.fillStyle = "white";
+                ctx.font = `900 ${base * 2.2}px 'Inter', sans-serif`;
+                ctx.fillText("JUANO RUIZ", qrX - (base * 2), canvas.height - (footerHeight / 2.2));
+                
+                ctx.fillStyle = "rgba(255,255,255,0.5)";
+                ctx.font = `500 ${base * 1.1}px 'Inter', sans-serif`;
+                ctx.fillText("PH. DIGITAL ARTIST", qrX - (base * 2), canvas.height - (footerHeight / 3.5));
+
+                // Mostrar resultado
+                preview.src = canvas.toDataURL("image/jpeg", 0.95);
+                previewContainer.style.display = "block";
+                downloadArea.style.display = "block";
+                loader.style.display = "none";
+                generateBtn.disabled = false;
+                downloadBtn.href = preview.src;
+                downloadBtn.download = `SelloDeLuz_JuanoRuiz.jpg`;
+            }, 100);
+
+        }, 200);
+    });
+
+    shareBtn.addEventListener('click', async () => {
+        try {
+            const blob = await (await fetch(preview.src)).blob();
+            const file = new File([blob], 'SelloDeLuz.jpg', { type: 'image/jpeg' });
+            if (navigator.share) await navigator.share({ files: [file] });
+        } catch (e) { console.log("Error al compartir"); }
+    });
+</script>
 </body>
 </html>
