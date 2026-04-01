@@ -6,8 +6,7 @@
     <title>Sello de Luz | Juano Ruiz Fotografía</title>
     
     <link rel="shortcut icon" type="image/png" href="logo.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
         :root { 
@@ -25,54 +24,60 @@
             display: flex; flex-direction: column; align-items: center; min-height: 100vh;
         }
 
-        header { padding: 80px 0 40px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 25px; }
+        header { padding: 50px 0 25px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; }
         
-        /* LOGO PRINCIPAL MÁS GRANDE */
         .logo-main { 
-            width: 280px; /* Aumentado */
+            width: 180px; 
             height: auto; 
-            filter: drop-shadow(0 0 30px rgba(59, 130, 246, 0.3)); 
-            transition: 0.5s ease; 
+            filter: drop-shadow(0 0 25px rgba(59, 130, 246, 0.25)); 
         }
-        .logo-main:hover { transform: scale(1.05); }
         
-        .brand-name { font-size: clamp(2.8rem, 10vw, 4.5rem); font-weight: 900; letter-spacing: -3px; line-height: 1; margin: 0; text-transform: uppercase; text-align: center; }
-        .brand-subtitle { font-size: 1.1rem; letter-spacing: 8px; text-transform: uppercase; color: var(--muted); margin-top: 10px; text-align: center; }
+        .brand-name { font-size: clamp(1.8rem, 7vw, 3rem); font-weight: 900; letter-spacing: -2px; margin: 0; text-transform: uppercase; text-align: center; }
+        .brand-subtitle { font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-top: 3px; text-align: center; }
 
         .container { width: 95%; max-width: 900px; padding-bottom: 60px; }
         .card { 
-            background: var(--card-bg); padding: 40px; border-radius: 30px; 
-            border: 1px solid rgba(255,255,255,0.08); text-align: center;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+            background: var(--card-bg); padding: 25px; border-radius: 20px; 
+            border: 1px solid rgba(255,255,255,0.06); text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        /* Estilo para el input manual de iluminación */
+        .input-luz {
+            width: 100%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            box-sizing: border-box;
         }
 
         .btn-main {
-            background: transparent; color: var(--text); padding: 22px; border-radius: 18px;
+            background: transparent; color: var(--text); padding: 18px; border-radius: 15px;
             font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
-            width: 100%; max-width: 420px; border: 1px solid rgba(255,255,255,0.2);
-            margin: 12px auto; text-decoration: none; font-size: 1.15rem; transition: 0.3s;
+            width: 100%; max-width: 380px; border: 1px solid rgba(255,255,255,0.15);
+            margin: 8px auto; text-decoration: none; transition: 0.3s;
+            font-size: 1rem;
         }
-        .btn-generate { background: var(--accent); border: none; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); }
-        .btn-generate:hover:not(:disabled) { background: #2563eb; transform: translateY(-2px); }
-        .btn-generate:disabled { background: #222; opacity: 0.5; cursor: not-allowed; }
+        .btn-generate { background: var(--accent); border: none; }
+        .btn-generate:disabled { opacity: 0.3; cursor: not-allowed;}
 
         #previewContainer { 
-            margin: 40px auto; border-radius: 20px; overflow: hidden; 
-            display: none; border: 1px solid rgba(255,255,255,0.15); 
-            background: #080808; width: 100%;
-            box-shadow: 0 30px 70px rgba(0,0,0,0.8);
+            margin: 30px auto; border-radius: 15px; overflow: hidden; 
+            display: none; border: 1px solid rgba(255,255,255,0.08); 
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.7);
         }
         #preview { width: 100%; height: auto; display: block; }
 
-        #downloadArea { display: none; margin-top: 25px; }
+        #downloadArea { display: none; margin-top: 20px; }
         .btn-save { background: var(--success); border: none; }
         
-        .social-dock { display: flex; justify-content: center; gap: 35px; flex-wrap: wrap; margin-top: 50px; }
-        .social-link { color: var(--text); text-decoration: none; opacity: 0.6; display: flex; flex-direction: column; align-items: center; font-size: 2.2rem; transition: 0.3s; }
-        .social-link:hover { opacity: 1; color: var(--accent); transform: translateY(-5px); }
-        .social-link span { font-size: 0.8rem; margin-top: 10px; color: var(--muted); font-weight: 500; }
-
-        #loader { display: none; margin: 30px 0; color: var(--accent); font-size: 3.5rem; animation: spin 1s linear infinite; }
+        #loader { display: none; margin: 20px 0; color: var(--accent); font-size: 2.2rem; animation: spin 1s linear infinite; }
         @keyframes spin { 100% { transform: rotate(360deg); } }
         
         canvas { display: none; }
@@ -83,18 +88,18 @@
 
 <header>
     <img src="logo.png" alt="Juano Ruiz" class="logo-main">
-    <div class="brand-text-container">
-        <h1 class="brand-name">SELLO DE LUZ</h1>
-        <p class="brand-subtitle">Juano Ruiz Fotografía</p>
-    </div>
+    <h1 class="brand-name">SELLO DE LUZ</h1>
+    <p class="brand-subtitle">Juano Ruiz Fotografía</p>
 </header>
 
 <div class="container">
     <div class="card">
-        <label for="upload" class="btn-main"><i class="fas fa-images"></i> &nbsp; CARGAR FOTOGRAFÍA</label>
+        <label for="upload" class="btn-main"><i class="fas fa-images"></i> &nbsp; 1. CARGAR FOTOGRAFÍA</label>
         <input type="file" id="upload" accept="image/jpeg, image/jpg">
         
-        <button id="generateBtn" class="btn-main btn-generate" disabled>GENERAR SELLO PROFESIONAL</button>
+        <input type="text" id="inputManual" class="input-luz" placeholder="Opcional: Describir esquema de iluminación o nombre del estudio">
+        
+        <button id="generateBtn" class="btn-main btn-generate" disabled>2. GENERAR TARJETA EXIF CENTRAL</button>
         
         <div id="loader"><i class="fas fa-circle-notch"></i></div>
 
@@ -103,18 +108,11 @@
         </div>
 
         <div id="downloadArea">
-            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <a id="downloadBtn" class="btn-main btn-save" style="max-width: 250px;"><i class="fas fa-cloud-download-alt"></i> DESCARGAR</a>
-                <button id="shareBtn" class="btn-main" style="max-width: 250px;"><i class="fas fa-share-nodes"></i> COMPARTIR</button>
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                <a id="downloadBtn" class="btn-main btn-save" style="max-width: 180px;">DESCARGAR</a>
+                <button id="shareBtn" class="btn-main" style="max-width: 180px;">COMPARTIR</button>
             </div>
         </div>
-    </div>
-
-    <div class="social-dock">
-        <a href="https://wa.me/5491133832660" target="_blank" class="social-link"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></a>
-        <a href="https://www.instagram.com/juanoruiz/" target="_blank" class="social-link"><i class="fab fa-instagram"></i><span>Instagram</span></a>
-        <a href="https://www.threads.net/@juanoruiz" target="_blank" class="social-link"><i class="fab fa-threads"></i><span>Threads</span></a>
-        <a href="https://www.facebook.com/Juan0Ruiz/" target="_blank" class="social-link"><i class="fab fa-facebook-f"></i><span>Facebook</span></a>
     </div>
 </div>
 
@@ -125,6 +123,7 @@
 
 <script>
     const upload = document.getElementById('upload');
+    const inputManual = document.getElementById('inputManual');
     const generateBtn = document.getElementById('generateBtn');
     const preview = document.getElementById('preview');
     const downloadBtn = document.getElementById('downloadBtn');
@@ -144,7 +143,6 @@
         loader.style.display = "block";
         previewContainer.style.display = "none";
         downloadArea.style.display = "none";
-
         try {
             exifData = await exifr.parse(file, { lens: true });
             const reader = new FileReader();
@@ -156,7 +154,7 @@
                 originalImg.src = event.target.result;
             };
             reader.readAsDataURL(file);
-        } catch (err) { loader.style.display = "none"; alert("Error al leer la foto."); }
+        } catch (err) { loader.style.display = "none"; alert("Error al leer EXIF."); }
     });
 
     generateBtn.addEventListener('click', () => {
@@ -168,96 +166,126 @@
             canvas.height = originalImg.height;
             ctx.drawImage(originalImg, 0, 0);
 
-            // 1. Datos EXIF
+            // 1. Obtener y formatear datos
             const cam = (exifData?.Model || "CÁMARA DIGITAL").toUpperCase();
             const lens = (exifData?.LensModel || "LENTE OBJETIVO").toUpperCase();
-            const f = exifData?.FNumber ? `ƒ/${exifData.FNumber}` : 'ƒ/--';
+            const f = exifData?.FNumber ? `f/${exifData.FNumber}` : 'f/--';
             const iso = exifData?.ISO ? `ISO ${exifData.ISO}` : 'ISO --';
             const exp = exifData?.ExposureTime ? (exifData.ExposureTime >= 1 ? `${exifData.ExposureTime}s` : `1/${Math.round(1/exifData.ExposureTime)}s`) : '--s';
             const mm = exifData?.FocalLength ? `${exifData.FocalLength}mm` : '--mm';
+            const textoManual = inputManual.value.trim();
 
-            // 2. Proporciones
+            // 2. Proporciones dinámicas para TARJETA CENTRAL
             const base = canvas.width / 100;
-            const footerHeight = base * 12;
-            const padding = base * 4;
+            const tarjetaW = canvas.width * 0.90; // Ocupa casi todo el ancho
+            const tarjetaH = canvas.height * 0.85; // Ocupa casi todo el alto
+            const tarjetaX = (canvas.width - tarjetaW) / 2; // Centrado
+            const tarjetaY = (canvas.height - tarjetaH) / 2; // Centrado
 
-            // 3. Fondo Degradado
-            const grad = ctx.createLinearGradient(0, canvas.height - footerHeight * 1.5, 0, canvas.height);
-            grad.addColorStop(0, "rgba(0,0,0,0)");
-            grad.addColorStop(1, "rgba(0,0,0,0.85)");
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, canvas.height - footerHeight * 1.5, canvas.width, footerHeight * 1.5);
-
-            // 4. Icono de Cámara (Dibujado simple o texto con FontAwesome)
-            ctx.fillStyle = "var(--accent)";
-            ctx.font = `900 ${base * 2}px "Font Awesome 6 Free"`;
-            ctx.fillText("\uf030", padding, canvas.height - (footerHeight / 1.3)); // Icono Cámara
-
-            // 5. Textos Técnicos
-            ctx.textAlign = "left";
-            ctx.textBaseline = "middle";
+            // 3. Dibujar el Recuadro Traslúcido (Efecto Humo/Vidrio Suave)
+            ctx.save();
+            ctx.beginPath();
+            ctx.roundRect(tarjetaX, tarjetaY, tarjetaW, tarjetaH, base * 3); // Bordes redondeados
+            ctx.fillStyle = "rgba(0, 0, 0, 0.45)"; // Fondo oscuro con mucha transparencia (efecto humo suave)
+            ctx.fill();
             
-            // Equipo
-            ctx.fillStyle = "rgba(255,255,255,0.7)";
-            ctx.font = `600 ${base * 1.5}px 'Inter', sans-serif`;
-            ctx.fillText(`${cam}  |  ${lens}`, padding + (base * 3.5), canvas.height - (footerHeight / 1.3));
+            // Borde muy suave
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.15)";
+            ctx.stroke();
+            ctx.restore();
 
-            // Parámetros
-            ctx.fillStyle = "white";
-            ctx.font = `bold ${base * 3}px 'Inter', sans-serif`;
-            ctx.fillText(`${f}   ${exp}   ${iso}   ${mm}`, padding, canvas.height - (footerHeight / 2.5));
+            // 4. Dibujar Iconos y Textos (Organizados en la tarjeta central)
+            const padding = base * 5;
+            const textStartX = tarjetaX + padding;
+            let currentY = tarjetaY + padding * 1.5;
 
-            // 6. Firma y QR (Derecha)
-            const qrSize = base * 8;
-            const qrX = canvas.width - padding - qrSize;
-            const qrY = canvas.height - footerHeight + (base * 2);
-
-            // Generar QR invisible en el DOM primero
-            const qrDiv = document.createElement("div");
-            new QRCode(qrDiv, {
-                text: "https://www.instagram.com/juanoruiz/",
-                width: 400,
-                height: 400,
-                colorDark: "#ffffff",
-                colorLight: "#00000000", // Transparente
-                correctLevel: QRCode.CorrectLevel.H
-            });
-
-            // Esperar a que el QR se renderice y dibujarlo en Canvas
-            setTimeout(() => {
-                const qrImg = qrDiv.querySelector("img");
-                if(qrImg) {
-                    ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
-                }
-
-                ctx.textAlign = "right";
+            // Función para dibujar textos técnicos (f, ISO, etc)
+            const drawTecnico = (label, value, y, align) => {
+                ctx.textAlign = align;
+                ctx.fillStyle = "rgba(255,255,255,0.6)";
+                ctx.font = `600 ${base * 1.5}px 'Inter'`;
+                ctx.fillText(label, (align === "left") ? textStartX : tarjetaX + tarjetaW - padding, y);
+                
                 ctx.fillStyle = "white";
-                ctx.font = `900 ${base * 2.2}px 'Inter', sans-serif`;
-                ctx.fillText("JUANO RUIZ", qrX - (base * 2), canvas.height - (footerHeight / 2.2));
+                ctx.font = `bold ${base * 3.5}px 'JetBrains Mono'`; // Fuente Mono profesional para valores
+                ctx.fillText(value, (align === "left") ? textStartX : tarjetaX + tarjetaW - padding, y + base * 4);
+            };
+
+            // Dibujar Parámetros Técnicos (Superiores)
+            drawTecnico("DIAFRAGMA", f, currentY, "left");
+            drawTecnico("TIEMPO", exp, currentY, "right");
+            currentY += base * 12;
+            drawTecnico("ISO", iso, currentY, "left");
+            drawTecnico("FOCAL", mm, currentY, "right");
+            currentY += base * 16;
+
+            // 5. Dibujar Iconos Blindados (SVG cargados en JS)
+            const drawIcon = (path, x, y, size, color) => {
+                ctx.save();
+                ctx.translate(x, y);
+                const scale = size / 24; // Los SVG están diseñados en 24x24
+                ctx.scale(scale, scale);
+                ctx.fillStyle = color;
+                const p = new Path2D(path);
+                ctx.fill(p);
+                ctx.restore();
+            };
+
+            // Iconos SVG de Cámara y Lente
+            const iconCam = "M4 4h3l2-2h6l2 2h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2m8 3a5 5 0 1 0 5 5 5 5 0 0 0-5-5m0 2a3 3 0 1 1-3 3 3 3 0 0 1 3-3Z";
+            const iconLens = "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8m0-12.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5m0 7A2.5 2.5 0 1 1 14.5 12 2.5 2.5 0 0 1 12 14.5Z";
+
+            // Cámara
+            drawIcon(iconCam, textStartX, currentY, base * 3, "#3b82f6");
+            ctx.textAlign = "left";
+            ctx.fillStyle = "rgba(255,255,255,0.8)";
+            ctx.font = `600 ${base * 1.6}px 'Inter'`;
+            ctx.fillText(cam, textStartX + base * 4, currentY + base * 1.5);
+            currentY += base * 5;
+
+            // Lente
+            drawIcon(iconLens, textStartX, currentY, base * 3, "#3b82f6");
+            ctx.fillStyle = "rgba(255,255,255,0.6)";
+            ctx.font = `500 ${base * 1.4}px 'Inter'`;
+            ctx.fillText(lens, textStartX + base * 4, currentY + base * 1.5);
+            currentY += base * 10;
+
+            // 6. Texto Manual (Iluminación o Estudio) si existe
+            if (textoManual) {
+                // Icono de lamparita
+                const iconLuz = "M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2m0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8m-1-12.5a3.5 3.5 0 1 0 7 0 3.5 3.5 0 0 0-7 0m0 6a2.5 2.5 0 1 1 5 0 2.5 2.5 0 0 1-5 0";
+                drawIcon(iconLuz, textStartX, currentY, base * 2.5, "rgba(255,255,255,0.4)");
                 
                 ctx.fillStyle = "rgba(255,255,255,0.5)";
-                ctx.font = `500 ${base * 1.1}px 'Inter', sans-serif`;
-                ctx.fillText("PH. DIGITAL ARTIST", qrX - (base * 2), canvas.height - (footerHeight / 3.5));
+                ctx.font = `italic 500 ${base * 1.3}px 'Inter'`;
+                ctx.fillText(textoManual, textStartX + base * 3.5, currentY + base * 1.3);
+                currentY += base * 6;
+            }
 
-                // Mostrar resultado
-                preview.src = canvas.toDataURL("image/jpeg", 0.95);
-                previewContainer.style.display = "block";
-                downloadArea.style.display = "block";
-                loader.style.display = "none";
-                generateBtn.disabled = false;
-                downloadBtn.href = preview.src;
-                downloadBtn.download = `SelloDeLuz_JuanoRuiz.jpg`;
-            }, 100);
+            // 7. Firma Juano Ruiz (Grande y centrado abajo)
+            ctx.textAlign = "center";
+            ctx.fillStyle = "white";
+            ctx.font = `900 ${base * 3}px 'Inter'`;
+            ctx.fillText("JUANO RUIZ PHOTOGRAPHY", canvas.width / 2, tarjetaY + tarjetaH - padding);
 
-        }, 200);
+            // Mostrar resultado
+            preview.src = canvas.toDataURL("image/jpeg", 0.95);
+            previewContainer.style.display = "block";
+            downloadArea.style.display = "block";
+            loader.style.display = "none";
+            downloadBtn.href = preview.src;
+            downloadBtn.download = `TarjetaEXIF_JuanoRuiz.jpg`;
+
+        }, 300);
     });
 
     shareBtn.addEventListener('click', async () => {
         try {
             const blob = await (await fetch(preview.src)).blob();
-            const file = new File([blob], 'SelloDeLuz.jpg', { type: 'image/jpeg' });
+            const file = new File([blob], 'TarjetaEXIF.jpg', { type: 'image/jpeg' });
             if (navigator.share) await navigator.share({ files: [file] });
-        } catch (e) { console.log("Error al compartir"); }
+        } catch (e) { alert("Error al compartir"); }
     });
 </script>
 </body>
